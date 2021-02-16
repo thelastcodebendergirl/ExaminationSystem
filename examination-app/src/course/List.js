@@ -1,8 +1,7 @@
 import React from 'react';
 import { Table, Space, Button } from 'antd';
-import { Link, useRouteMatch } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 const CourseList = () => {
-	const { url, path } = useRouteMatch();
 	const type = 'teacher';
 	const data = [
 		{ key: 1, kurs: 'cloud computing' },
@@ -19,20 +18,20 @@ const CourseList = () => {
 			render: (record) =>
 				type === 'teacher' ? (
 					<Space>
-						<Link to={`${url}/edit-course/`.concat(record.key)}>
+						<Link to={`/edit-course/`.concat(record.key)}>
 							<a>add student</a>
 						</Link>
 
-						<Link to={`${url}/create-exam`}>
+						<Link to={`/create-exam`}>
 							<a>create exam</a>
 						</Link>
-						<Link to={`${url}/exams`}>
+						<Link to={`/exams`}>
 							<a>list exams</a>
 						</Link>
 					</Space>
 				) : (
 					<Space size='middle'>
-						<Link to={`${url}/exams`}>
+						<Link to={`/exams`}>
 							<a>list exams</a>
 						</Link>
 					</Space>
@@ -41,7 +40,7 @@ const CourseList = () => {
 	];
 	return type === 'teacher' ? (
 		<>
-			<Link to={`${url}/create-course`}>
+			<Link to={`/create-course`}>
 				<Button>Create Course</Button>
 			</Link>
 

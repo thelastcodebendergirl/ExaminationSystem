@@ -9,6 +9,7 @@ import {
 import 'antd/dist/antd.css';
 import Sider from './pages/Dashboard';
 import Login from './pages/Login';
+import Register from './pages/Register';
 
 function App() {
 	return (
@@ -16,7 +17,13 @@ function App() {
 			<BrowserRouter>
 				<Switch>
 					<Route exact path='/'>
-						<Login></Login>
+						<Login />
+					</Route>
+					<Route exact path='/login'>
+						<Login />
+					</Route>
+					<Route exact path='/register'>
+						<Register />
 					</Route>
 					<Route path='/dashboard'>
 						<Sider />

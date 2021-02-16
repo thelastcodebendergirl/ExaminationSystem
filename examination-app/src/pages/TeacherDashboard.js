@@ -12,7 +12,7 @@ import {
 	Route,
 	useRouteMatch,
 	Link,
-	BrowserRouter,
+	BrowserRouter as Router,
 } from 'react-router-dom';
 import CourseList from '../course/List';
 import './Dashboard.css';
@@ -28,7 +28,7 @@ import OnSubmitPage from '../exam/OnSubmit';
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 
-const TeacherDashboard = (props) => {
+const TeacherDashboard = ({ match }) => {
 	const [collapsed, setCollapsed] = useState(false);
 	const { url, path } = useRouteMatch();
 	const onCollapse = () => {
@@ -37,63 +37,68 @@ const TeacherDashboard = (props) => {
 
 	return (
 		<>
-			<Layout style={{ minHeight: '100vh' }}>
-				<Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
-					<div className='logo' />
-					<Menu theme='dark' defaultSelectedKeys={['1']} mode='inline'>
-						<Menu.Item key='course' title='Kurs' icon={<PieChartOutlined />}>
-							<Link to={`${url}/courses`}>Kurs</Link>
-						</Menu.Item>
-						<Menu.Item key='student' icon={<DesktopOutlined />}>
-							<Link to={`${url}/student`}>Öğrenciler</Link>
-						</Menu.Item>
-						<Menu.Item key='user' title='kullanıcı' icon={<UserOutlined />}>
-							<Link to={`${url}/user`}>Kullanıcı</Link>
-						</Menu.Item>
-					</Menu>
-				</Sider>
-				<Layout className='site-layout'>
-					<Header className='site-layout-background' style={{ padding: 0 }} />
+			<Router>
+				<Layout style={{ minHeight: '100vh' }}>
+					<Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
+						<div className='logo' />
+						<Menu theme='dark' defaultSelectedKeys={['1']} mode='inline'>
+							<Menu.Item key='course' title='Kurs' icon={<PieChartOutlined />}>
+								<Link to={`/courses`}>Kurs</Link>
+							</Menu.Item>
+							<Menu.Item key='student' icon={<DesktopOutlined />}>
+								<Link to={`/student`}>Öğrenciler</Link>
+							</Menu.Item>
+							<Menu.Item key='user' title='kullanıcı' icon={<UserOutlined />}>
+								<Link to={`/user`}>Kullanıcı</Link>
+							</Menu.Item>
+						</Menu>
+					</Sider>
+					<Layout className='site-layout'>
+						<Header className='site-layout-background' style={{ padding: 0 }} />
 
-					<Content style={{ margin: '0 16px' }}>
-						<div
-							className='site-layout-background'
-							style={{ padding: 24, minHeight: 360 }}
-						>
-							<Route path={`${path}/courses`}>
-								<CourseList />
-							</Route>
-							<Route path={`${path}/user`}>
-								<User />
-							</Route>
-							<Route path={`${path}/courses/exams`}>
-								<ExamList />
-							</Route>
-							<Route path={`${path}/courses/create-course`}>
-								<CreateCourse />
-							</Route>
-							<Route path={`${path}/courses/edit-course/:id`}>
-								<EditCourse />
-							</Route>
-							<Route path={`${path}/courses/create-exam`}>
-								<CreateExam />
-							</Route>
-							<Route path={`${path}/exam/:id`}>
-								<Exam />
-							</Route>
-							<Route path={`${path}/delete-exam/:id`}>
-								<DeleteExam />
-							</Route>
-							<Route path={`${path}/onSubmit`}>
-								<OnSubmitPage />
-							</Route>
-						</div>
-					</Content>
-					<Footer style={{ textAlign: 'center' }}>
-						Examination System ©2020 Created by Hatice Durmaz
-					</Footer>
+						<Switch>
+							<Content style={{ margin: '0 16px' }}>
+								<div
+									className='site-layout-background'
+									style={{ padding: 24, minHeight: 360 }}
+								>
+									<Route path={`/courses`}>
+										<CourseList />
+									</Route>
+									<Route path={`/user`}>
+										<User />
+									</Route>
+									<Route path={`/exams`}>
+										<ExamList />
+									</Route>
+									<Route path={`/create-course`}>
+										<CreateCourse />
+									</Route>
+									<Route path={`/edit-course/:id`}>
+										<EditCourse />
+									</Route>
+									<Route path={`/create-exam`}>
+										<CreateExam />
+									</Route>
+									<Route path={`/exam/:id`}>
+										<Exam />
+									</Route>
+									<Route path={`/delete-exam/:id`}>
+										<DeleteExam />
+									</Route>
+									<Route path={`/onSubmit`}>
+										<OnSubmitPage />
+									</Route>
+								</div>
+							</Content>
+						</Switch>
+
+						<Footer style={{ textAlign: 'center' }}>
+							Examination System ©2020 Created by Hatice Durmaz
+						</Footer>
+					</Layout>
 				</Layout>
-			</Layout>
+			</Router>
 		</>
 	);
 };
