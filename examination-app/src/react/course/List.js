@@ -3,6 +3,7 @@ import { Table, Space, Button } from 'antd';
 import { Link } from 'react-router-dom';
 const CourseList = () => {
 	const type = 'teacher';
+	const { id } = localStorage.getItem('userId');
 	const data = [
 		{ key: 1, kurs: 'cloud computing' },
 		{ key: 2, kurs: 'bulut bilişim' },
