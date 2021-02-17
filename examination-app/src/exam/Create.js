@@ -1,7 +1,13 @@
-import { Form, Input, Button, Space, DatePicker, Card } from 'antd';
+import { Form, Input, Button, Space, DatePicker, Card, Select } from 'antd';
+import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 const { RangePicker } = DatePicker;
+const { Option } = Select;
 const CreateExam = () => {
+	const [disable, setDisable] = useState(false);
+	const { id } = useParams();
+	const addQuestion = () => {};
 	const onFinish = (values) => {
 		console.log('Received values of form:', values);
 	};
@@ -12,8 +18,15 @@ const CreateExam = () => {
 			value[1].format('YYYY-MM-DD HH:mm')
 		);
 	};
+	const onClick = () => {
+		setDisable(true);
+	};
 	return (
-		<Form name='dynamic_form_nest_item' onFinish={onFinish} autoComplete='off'>
+		<Form
+			name='name="dynamic_form_item"'
+			onFinish={onFinish}
+			autoComplete='off'
+		>
 			<Space style={{ display: 'grid', marginBottom: 8 }} align='baseline'>
 				<Card>
 					<Form.Item
@@ -40,9 +53,87 @@ const CreateExam = () => {
 					</Form.Item>
 				</Card>
 			</Space>
+			<Form.List name='questions'>
+				{(fields, { add, remove }) => (
+					<>
+						{fields.map((field) => (
+							<Form.Item key={field.key}>
+								<Form.Item
+									{...field}
+									name={[field.name, 'question']}
+									fieldKey={[field.fieldKey, 'question']}
+									rules={[{ required: true, message: 'Missing question' }]}
+								>
+									<Input title='Question' placeholder='Question' />
+								</Form.Item>
+								<Form.Item
+									{...field}
+									name={[field.name, 'optionA']}
+									fieldKey={[field.fieldKey, 'optionA']}
+									rules={[{ required: true, message: 'Missing question' }]}
+								>
+									<Input title='A' placeholder='Option A' />
+								</Form.Item>
+								<Form.Item
+									{...field}
+									name={[field.name, 'optionB']}
+									fieldKey={[field.fieldKey, 'optionB']}
+									rules={[{ required: true, message: 'Missing question' }]}
+								>
+									<Input title='B' placeholder='Option B' />
+								</Form.Item>
+								<Form.Item
+									{...field}
+									name={[field.name, 'optionC']}
+									fieldKey={[field.fieldKey, 'optionC']}
+									rules={[{ required: true, message: 'Missing question' }]}
+								>
+									<Input title='C' placeholder='Option C' />
+								</Form.Item>
+								<Form.Item
+									{...field}
+									name={[field.name, 'optionD']}
+									fieldKey={[field.fieldKey, 'optionD']}
+									rules={[{ required: true, message: 'Missing question' }]}
+								>
+									<Input title='D' placeholder='Option D' />
+								</Form.Item>
+								<Form.Item
+									{...field}
+									name={[field.name, 'rightAnswer']}
+									fieldKey={[field.fieldKey, 'rightAnswer']}
+									rules={[{ required: true, message: 'Missing question' }]}
+								>
+									<Select>
+										<Option value='A'>A</Option>
+										<Option value='B'>B</Option>
+										<Option value='C'>C</Option>
+										<Option value='D'>D</Option>
+									</Select>
+								</Form.Item>
+							</Form.Item>
+						))}
+						<Form.Item>
+							<Button
+								type='dashed'
+								onClick={() => add()}
+								block
+								icon={<PlusOutlined />}
+							>
+								Add field
+							</Button>
+						</Form.Item>
+					</>
+				)}
+			</Form.List>
 
 			<Form.Item>
-				<Button type='primary' htmlType='submit'>
+				<Button
+					onClick={onClick}
+					disabled={disable}
+					type='primary'
+					htmlType='submit'
+				>
 					Create
 				</Button>
 			</Form.Item>

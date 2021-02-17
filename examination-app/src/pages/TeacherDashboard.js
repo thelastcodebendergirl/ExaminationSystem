@@ -77,7 +77,7 @@ const TeacherDashboard = ({ match }) => {
 									<Route path={`/edit-course/:id`}>
 										<EditCourse />
 									</Route>
-									<Route path={`/create-exam`}>
+									<Route path={`/create-exam/:id`}>
 										<CreateExam />
 									</Route>
 									<Route path={`/exam/:id`}>

@@ -61,8 +61,8 @@ const createCourse = (body) => {
 			}
 		);
 		pool.query(
-			'INSERT INTO takes (name ,student_id) VALUES ($1, $2) RETURNING *',
-			[name, teacher_id],
+			'SELECT * FROM course  WHERE course_id = $1 ',
+			[],
 			(error, results) => {
 				if (error) {
 					reject(error);

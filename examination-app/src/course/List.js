@@ -22,7 +22,7 @@ const CourseList = () => {
 							<a>add student</a>
 						</Link>
 
-						<Link to={`/create-exam`}>
+						<Link to={`/create-exam/`.concat(record.key)}>
 							<a>create exam</a>
 						</Link>
 						<Link to={`/exams`}>
