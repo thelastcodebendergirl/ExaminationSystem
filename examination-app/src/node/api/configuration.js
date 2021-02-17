@@ -2,6 +2,13 @@ const express = require('express');
 const app = express();
 const port = 3001;
 
+app.get('/', (req, res) => {
+	res.status(200).send('Hello World!');
+});
+
+app.listen(port, () => {
+	console.log(`App running on port ${port}.`);
+});
 const exam_model = require('./exam_model');
 const course_model = require('./course_model');
 const user_model = require('./user_model');

@@ -11,7 +11,8 @@ const Login = (props) => {
 	const onFinish = (values) => {
 		document.getElementById('userno');
 		console.log('deneme');
-		console.log('Success:', userNo, 'password', password);
+		console.log('Success:', values);
+		localStorage.setItem('userId', userNo);
 	};
 
 	const onFinishFailed = (errorInfo) => {
@@ -29,7 +30,7 @@ const Login = (props) => {
 						onFinishFailed={onFinishFailed}
 						name='login'
 					>
-						<Form.Item label={'User No'} name='userNo'>
+						<Form.Item label={'User No'} name='userNo' fieldKey='userNo'>
 							<Input
 								placeholder={'please enter your school number'}
 								value={userNo}
@@ -41,7 +42,7 @@ const Login = (props) => {
 								]}
 							/>
 						</Form.Item>
-						<Form.Item label={'Password'} name='password'>
+						<Form.Item label={'Password'} name='password' fieldKey='password'>
 							<Input.Password
 								type='password'
 								value={password}

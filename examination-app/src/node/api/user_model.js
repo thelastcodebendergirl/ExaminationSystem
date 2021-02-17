@@ -8,7 +8,8 @@ const pool = new Pool({
 });
 const getUsers = () => {
 	return new Promise(function (resolve, reject) {
-		pool.query('SELECT * FROM user ORDER BY id ASC', (error, results) => {
+		pool.query('SELECT * FROM user_db ORDER BY id ASC', (error, results) => {
+			console.log('getUsers');
 			if (error) {
 				reject(error);
 			}
@@ -18,20 +19,23 @@ const getUsers = () => {
 };
 const getStudent = () => {
 	return new Promise(function (resolve, reject) {
-		pool.query('SELECT * FROM student ORDER BY id ASC', (error, results) => {
-			if (error) {
-				reject(error);
+		pool.query(
+			'SELECT * FROM student ORDER BY user_id ASC',
+			(error, results) => {
+				if (error) {
+					reject(error);
+				}
+				resolve(results.rows);
 			}
-			resolve(results.rows);
-		});
+		);
 	});
 };
 const createUser = (body) => {
 	return new Promise(function (resolve, reject) {
-		const { fistName, lastName, userNo, password, isStudent } = body;
+		const { fistname, lastname, user_id, password, isStudent } = body;
 		pool.query(
-			'INSERT INTO user (userNo) VALUES ($1, $2,$3,$4) RETURNING *',
-			[fistName, lastName, userNo, password],
+			'INSERT INTO user_db (firstname,lastname,user_id,password) VALUES ($1, $2,$3,$4) RETURNING *',
+			[fistname, lastname, user_id, password],
 			(error, results) => {
 				if (error) {
 					reject(error);
@@ -41,8 +45,8 @@ const createUser = (body) => {
 		);
 		if (isStudent) {
 			pool.query(
-				'INSERT INTO user (firstName,lastName,userNo,password) VALUES ($1, $2,$3,$4) RETURNING *',
-				[fistName, lastName, userNo, password],
+				'INSERT INTO student(firstname,lastname,user_id,password) VALUES ($1, $2,$3,$4) RETURNING *',
+				[fistname, lastname, user_id, password],
 				(error, results) => {
 					if (error) {
 						reject(error);
@@ -52,8 +56,8 @@ const createUser = (body) => {
 			);
 		} else {
 			pool.query(
-				'INSERT INTO user (firstName,lastName,userNo,password) VALUES ($1, $2,$3,$4) RETURNING *',
-				[fistName, lastName, userNo, password],
+				'INSERT INTO teacher(firstname,lastname,user_id,password) VALUES ($1, $2,$3,$4) RETURNING *',
+				[fistname, lastname, user_id, password],
 				(error, results) => {
 					if (error) {
 						reject(error);

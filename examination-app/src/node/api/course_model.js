@@ -60,9 +60,15 @@ const createCourse = (body) => {
 				resolve(`A new user has been added added: ${results.rows[0]}`);
 			}
 		);
+	});
+};
+const addStudent = (body) => {
+	return new Promise(function (resolve, reject) {
+		const { name, teacher_id, course_id } = body;
+		const { student_id_list } = body;
 		pool.query(
-			'SELECT * FROM course  WHERE course_id = $1 ',
-			[],
+			'SELECT * FROM course WHERE ',
+			[name, teacher_id],
 			(error, results) => {
 				if (error) {
 					reject(error);
