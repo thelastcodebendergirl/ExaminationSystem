@@ -5,5 +5,7 @@
     "appService.zipIgnorePattern": [
         "node_modules{,/**}",
         ".vscode{,/**}"
-    ]
+    ],
+    "javascript.preferences.importModuleSpecifier": "relative",
+    "editor.inlineSuggest.enabled": true
 }

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Form, Input, Button, Layout, Typography, Space } from 'antd';
 import { Link } from 'react-router-dom';
 import Navbar from '../componentts/Navbar';
+import DashboardMenu from './Dashboard';
 const { Header, Content, Sider } = Layout;
 
 const Login = (props) => {
@@ -10,8 +11,6 @@ const Login = (props) => {
 	const [password, setPassword] = useState('');
 	const onFinish = (values) => {
 		document.getElementById('userno');
-		console.log('deneme');
-		console.log('Success:', values);
 		localStorage.setItem('userId', userNo);
 	};
 

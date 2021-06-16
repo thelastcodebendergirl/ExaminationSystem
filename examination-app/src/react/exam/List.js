@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Table, Space, Button, Modal } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, useRouteMatch } from 'react-router-dom';
 import moment from 'moment';
 const ExamList = () => {
 	const type = 'student';
-
+	const { path } = useRouteMatch();
 	const [isDateInterval, setIsDateInterval] = useState(false);
 	const data = [
 		{
@@ -39,7 +39,7 @@ const ExamList = () => {
 			render: (record) =>
 				type === 'teacher' ? (
 					<Space>
-						<Link to={'/delete-exam/'.concat(record.key)}>
+						<Link to={`${path}/delete-exam/`.concat(record.key)}>
 							<a>delete</a>
 						</Link>
 					</Space>
@@ -58,7 +58,7 @@ const ExamList = () => {
 								}
 							}}
 							to={() => {
-								return '/exam/'.concat(record.key);
+								return `${path}/exam/`.concat(record.key);
 
 								// if (isDateInterval) {
 								// 	return '/exam/'.concat(record.key);

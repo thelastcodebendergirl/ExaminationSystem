@@ -1,16 +1,8 @@
 import React from 'react';
-import StudentDashboard from './StudentDashboard';
-import TeacherDashboard from './TeacherDashboard';
+import { Switch } from 'react-router-dom';
+import MainLayout from './layout/MainLayout';
 
-const Sider = () => {
-	const userId = localStorage.getItem('userId');
-	const type = 'teacher';
-
-	return (
-		<>
-			{type === 'teacher' && <TeacherDashboard />}
-			{type === 'student' && <StudentDashboard />}
-		</>
-	);
+const DashboardMenu = () => {
+	return <MainLayout />;
 };
-export default Sider;
+export default DashboardMenu;
