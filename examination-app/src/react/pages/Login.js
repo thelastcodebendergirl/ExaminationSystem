@@ -4,6 +4,8 @@ import { Form, Input, Button, Layout, Typography, Space } from 'antd';
 import { Link } from 'react-router-dom';
 import Navbar from '../componentts/Navbar';
 import DashboardMenu from './Dashboard';
+import './login.css';
+import SizeContext from 'antd/lib/config-provider/SizeContext';
 const { Header, Content, Sider } = Layout;
 
 const Login = (props) => {
@@ -21,17 +23,17 @@ const Login = (props) => {
 		<>
 			<Layout>
 				<Header>
-					<Navbar />
+					<Navbar/>
 				</Header>
-				<Content>
+				<Content className="loginmeto">
 					<Form
 						onFinish={onFinish}
 						onFinishFailed={onFinishFailed}
 						name='login'
 					>
-						<Form.Item label={'User No'} name='userNo' fieldKey='userNo'>
-							<Input
-								placeholder={'please enter your school number'}
+						<Form.Item style={{marginLeft:"20%"}} label={'User No'} name='userNo' fieldKey='userNo'>
+							<Input style={{width:"48%", marginLeft:"12px"}}
+								placeholder={'Please enter your school number'}
 								value={userNo}
 								onChange={(e) => setUserNo(e.target.value)}
 								rules={[
@@ -41,15 +43,15 @@ const Login = (props) => {
 								]}
 							/>
 						</Form.Item>
-						<Form.Item label={'Password'} name='password' fieldKey='password'>
-							<Input.Password
+						<Form.Item style={{marginLeft:"20%"}} label={'Password'} name='password' fieldKey='password'>
+							<Input.Password style={{width:"50%"}}
 								type='password'
 								value={password}
 								onChange={(e) => setPassword(e.target.value)}
 								placeholder='Please enter your password'
 							/>
 						</Form.Item>
-						<Form.Item>
+						<Form.Item style={{textAlign:"center"}}>
 							<Link to={'/dashboard'}>
 								<Button type='primary' htmlType='submit' onClick={onFinish}>
 									Login

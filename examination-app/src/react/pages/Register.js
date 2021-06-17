@@ -43,37 +43,38 @@ const Register = () => {
 				<Header>
 					<Navbar />
 				</Header>
-				<Content>
-					<Form
+				<Content className="loginmeto">
+					<Form style={{width:"50%"}}
 						name='register'
 						onFinish={onFinish}
 						onFinishFailed={onFinishFailed}
+						style={{fontSize:"20px"}}
 					>
-						<Form.Item
+						<Form.Item style={{marginLeft:"20%"}} 
 							fieldKey='firstname'
 							label={'First Name'}
 							rules={[
 								{ required: true, message: 'Please input your first name!' },
 							]}
 						>
-							<Input
+							<Input style={{width:"50%"}}
 								value={firstname}
 								onChange={(e) => setfirstname(e.target.value)}
 							></Input>
 						</Form.Item>
-						<Form.Item
+						<Form.Item style={{marginLeft:"20%"}} 
 							label={'Last Name'}
 							fieldKey='lastname'
 							rules={[
 								{ required: true, message: 'Please input your last name!' },
 							]}
 						>
-							<Input
+							<Input style={{width:"50%"}}
 								value={lastname}
 								onChange={(e) => setlastname(e.target.value)}
 							></Input>
 						</Form.Item>
-						<Form.Item
+						<Form.Item style={{marginLeft:"20%", width:"200%"}} 
 							label={'School No'}
 							fieldKey='user_id'
 							rules={[
@@ -82,17 +83,17 @@ const Register = () => {
 						>
 							<InputNumber onChange={onChangeUser_id}></InputNumber>
 						</Form.Item>
-						<Form.Item
+						<Form.Item style={{marginLeft:"20%"}} 
 							fieldKey='password'
 							label={'Password'}
 							rules={[{ required: true, message: 'Please input password!' }]}
 						>
-							<Input.Password
+							<Input.Password style={{width:"50%", marginLeft:"7px"}}
 								value={password}
 								onChange={(e) => setpassword(e.target.value)}
 							></Input.Password>
 						</Form.Item>
-						<Form.Item>
+						<Form.Item style={{textAlign:"center"}}>
 							<Link to='/login'>
 								<Button type='primary' htmlType='submit' onClick={onClick}>
 									Sign In
