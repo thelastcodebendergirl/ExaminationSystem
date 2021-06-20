@@ -1,6 +1,6 @@
-import { Button, Space, Form, Typography } from 'antd';
+import { Button, Space, Form, Typography, message } from 'antd';
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useHistory } from 'react-router-dom';
 import moment from 'moment';
 import Question from './Question';
 const { Text } = Typography;
@@ -16,23 +16,14 @@ const Exam = () => {
 	const [remainMinute, setMinute] = useState(
 		endDate.subtract(now.format('mm'), 'minute')
 	);
-	useEffect(() => {
-		let Interval = setTimeout(() => {
-			if (remainMinute !== 0) {
-				setMinute(remainMinute.subtract(1, 'minutes'));
-			} else {
-				if (remainHour !== 0) {
-					setHour(remainHour.subtract(1, 'hours'));
-					setMinute(59);
-				} else {
-					//submit form
-				}
-			}
-		}, 60000);
-		return () => {
-			return () => clearTimeout(Interval);
-		};
-	});
+	const history = useHistory();
+	const success = () => {
+		message.success('Submitted successfully', [5]);
+	};
+	const handleClick = () => {
+		success();
+		history.goBack();
+	};
 
 	return (
 		<Form>
@@ -48,9 +39,7 @@ const Exam = () => {
 					<Question />
 				</Form.Item>
 				<Form.Item>
-					<Link to={`/onSubmit`}>
-						<Button>Submit</Button>
-					</Link>
+					<Button onClick={handleClick}>Submit</Button>
 				</Form.Item>
 			</Space>
 		</Form>

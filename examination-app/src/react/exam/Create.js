@@ -1,4 +1,13 @@
-import { Form, Input, Button, Space, DatePicker, Card, Select } from 'antd';
+import {
+	Form,
+	Input,
+	Button,
+	Space,
+	DatePicker,
+	Card,
+	Select,
+	message,
+} from 'antd';
 import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
@@ -10,16 +19,27 @@ const CreateExam = () => {
 	const addQuestion = () => {};
 	const onFinish = (values) => {
 		console.log('Received values of form:', values);
+		if (
+			values.examName &&
+			values.dateRange.length > 0 &&
+			values.questions.length > 0
+		)
+			success();
+		else if (!values.examName) error('Exam name must been entered.');
+		else if (values.dateRange.length > 0)
+			error('Exam date range  must been entered.');
+		else if (values.questions.length > 0)
+			error('Exam questions must been entered.');
 	};
 	const onOk = (value) => {
-		console.log(
-			'selected time:',
-			value[0].format('YYYY-MM-DD HH:mm'),
-			value[1].format('YYYY-MM-DD HH:mm')
-		);
+		console.log('selected time:');
 	};
-	const onClick = () => {
-		setDisable(true);
+	const onClick = () => {};
+	const success = () => {
+		message.success('Exam has been created successfully.', [5]);
+	};
+	const error = (detail) => {
+		message.error(`Exam has not been created.${detail} `, [5]);
 	};
 	return (
 		<Form
@@ -30,7 +50,7 @@ const CreateExam = () => {
 			<Space style={{ display: 'grid', marginBottom: 8 }} align='baseline'>
 				<Card>
 					<Form.Item
-						name={'exam-name'}
+						name={'examName'}
 						fieldKey={'exam-name'}
 						label={'Exam Name'}
 						rules={[{ required: true, message: 'Missing exam name' }]}
@@ -40,7 +60,7 @@ const CreateExam = () => {
 				</Card>
 				<Card>
 					<Form.Item
-						name={'date-range'}
+						name={'dateRange'}
 						fieldKey={'date-range'}
 						label={'Date Interval'}
 						rules={[{ required: true, message: 'Missing date range' }]}
@@ -70,7 +90,7 @@ const CreateExam = () => {
 									{...field}
 									name={[field.name, 'optionA']}
 									fieldKey={[field.fieldKey, 'optionA']}
-									rules={[{ required: true, message: 'Missing question' }]}
+									rules={[{ required: true, message: 'Missing option A ' }]}
 								>
 									<Input title='A' placeholder='Option A' />
 								</Form.Item>
@@ -78,7 +98,7 @@ const CreateExam = () => {
 									{...field}
 									name={[field.name, 'optionB']}
 									fieldKey={[field.fieldKey, 'optionB']}
-									rules={[{ required: true, message: 'Missing question' }]}
+									rules={[{ required: true, message: 'Missing option B ' }]}
 								>
 									<Input title='B' placeholder='Option B' />
 								</Form.Item>
@@ -86,7 +106,7 @@ const CreateExam = () => {
 									{...field}
 									name={[field.name, 'optionC']}
 									fieldKey={[field.fieldKey, 'optionC']}
-									rules={[{ required: true, message: 'Missing question' }]}
+									rules={[{ required: true, message: 'Missing option C ' }]}
 								>
 									<Input title='C' placeholder='Option C' />
 								</Form.Item>
@@ -94,7 +114,7 @@ const CreateExam = () => {
 									{...field}
 									name={[field.name, 'optionD']}
 									fieldKey={[field.fieldKey, 'optionD']}
-									rules={[{ required: true, message: 'Missing question' }]}
+									rules={[{ required: true, message: 'Missing option D ' }]}
 								>
 									<Input title='D' placeholder='Option D' />
 								</Form.Item>
@@ -102,15 +122,16 @@ const CreateExam = () => {
 									{...field}
 									name={[field.name, 'rightAnswer']}
 									fieldKey={[field.fieldKey, 'rightAnswer']}
-									rules={[{ required: true, message: 'Missing question' }]}
+									rules={[{ required: true, message: 'Missing right answer ' }]}
 								>
-									<Select>
+									<Select placeholder={'Right Answer'}>
 										<Option value='A'>A</Option>
 										<Option value='B'>B</Option>
 										<Option value='C'>C</Option>
 										<Option value='D'>D</Option>
 									</Select>
 								</Form.Item>
+								<MinusCircleOutlined onClick={() => remove(field.name)} />
 							</Form.Item>
 						))}
 						<Form.Item>
@@ -120,7 +141,7 @@ const CreateExam = () => {
 								block
 								icon={<PlusOutlined />}
 							>
-								Add field
+								Add question
 							</Button>
 						</Form.Item>
 					</>
@@ -128,12 +149,7 @@ const CreateExam = () => {
 			</Form.List>
 
 			<Form.Item>
-				<Button
-					onClick={onClick}
-					disabled={disable}
-					type='primary'
-					htmlType='submit'
-				>
+				<Button disabled={disable} type='primary' htmlType='submit'>
 					Create
 				</Button>
 			</Form.Item>
