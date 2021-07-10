@@ -1,29 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Table, Space, Button, Modal } from 'antd';
-import { Link, useRouteMatch } from 'react-router-dom';
+import { Link, useParams, useRouteMatch } from 'react-router-dom';
 import moment from 'moment';
 const ExamList = () => {
-	const type = 'student';
+	const typeOfUser =
+		localStorage.getItem('userType') === 's' ? 'student' : 'teacher';
+
 	const { path } = useRouteMatch();
+	const id = useParams();
 	const [isDateInterval, setIsDateInterval] = useState(false);
-	const data = [
-		{
-			key: 1,
-			sınav: 'cloud computing',
-			startDate: '2021-02-08 11.30',
-			endDate: '2021-02-08 12.30',
-		},
-		{
-			key: 2,
-			sınav: 'bulut bilişim',
-			startDate: '2021-02-08 11.30',
-			endDate: '2021-02-08 12.00',
-		},
-	];
+	const [data, setData] = useState([]);
+
+	useEffect(() => {
+		getExamData();
+	}, []);
+
+	const getExamData = () => {
+		fetch(`http://localhost:8888/api/exam/getAllExams/${id}`, {
+			// api port değişecek
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		})
+			.then((response) => response.json())
+			.then((json) => setData(json.examName));
+	};
+
 	const columns = [
 		{
 			title: 'Exam',
-			dataIndex: 'sınav',
+			dataIndex: 'examName',
 		},
 		{
 			title: 'Start Date',
@@ -37,7 +44,7 @@ const ExamList = () => {
 			title: 'Actions',
 			key: 'actions',
 			render: (record) =>
-				type === 'teacher' ? (
+				typeOfUser === 'teacher' ? (
 					<Space>
 						<Link to={`${path}/delete-exam/`.concat(record.key)}>
 							<a>delete</a>

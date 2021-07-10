@@ -27,7 +27,7 @@ const CreateCourse = () => {
 		console.log('Failed:', errorInfo);
 	};
 	const createCourse = (courseName) => {
-		fetch('http://localhost:8888/api/course/createCourse', {
+		fetch('http://localhost:8281/api/course/createCourse', {
 			// api port değişecek
 			method: 'POST',
 			headers: {

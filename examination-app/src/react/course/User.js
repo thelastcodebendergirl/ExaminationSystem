@@ -1,7 +1,7 @@
 import React from 'react';
 
 function User(props) {
-	return <div>User</div>;
+	return <div>not implemented</div>;
 }
 
 export default User;

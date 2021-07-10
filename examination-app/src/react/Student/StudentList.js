@@ -78,7 +78,7 @@ const Students = () => {
 					</Form.Item>
 					<Form.Item>
 						<Button id='get-students-button' type='primary' htmlType='submit'>
-							Create
+							Search
 						</Button>
 					</Form.Item>
 					<Form.Item>
