@@ -23,7 +23,7 @@ const Login = () => {
 	};
 	const login = (username, password) => {
 		localStorage.setItem('username', username);
-		fetch('http://localhost:8888/authenticate', {
+		fetch('http://localhost:8280/api/user/login', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
