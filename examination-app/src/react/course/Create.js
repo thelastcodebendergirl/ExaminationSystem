@@ -16,15 +16,33 @@ const CreateCourse = () => {
 	const [disableButton, setDisableButton] = useState(false);
 	const { id } = useParams();
 	const onFinish = (values) => {
-		success();
+		createCourse(values.courseName);
+
 		setDisableButton(!disableButton);
+
 		console.log('Success:', values);
 	};
 
 	const onFinishFailed = (errorInfo) => {
 		console.log('Failed:', errorInfo);
 	};
-
+	const createCourse = (courseName) => {
+		fetch('http://localhost:8888/api/course/createCourse', {
+			// api port değişecek
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				coursename: courseName,
+				teacherusername: localStorage.getItem('username'),
+			}),
+		}).then((response) => {
+			if (response.ok) {
+				success();
+			}
+		});
+	};
 	return (
 		<Form
 			{...layout}
@@ -41,14 +59,6 @@ const CreateCourse = () => {
 				<Input />
 			</Form.Item>
 
-			<Form.Item label='Students' name='students'>
-				<Select
-					mode='multiple'
-					allowClear
-					style={{ width: '100%' }}
-					placeholder='Please select'
-				/>
-			</Form.Item>
 			<Form.Item {...tailLayout}>
 				<Button
 					disabled={disableButton}

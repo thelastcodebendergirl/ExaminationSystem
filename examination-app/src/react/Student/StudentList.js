@@ -1,32 +1,44 @@
-import React, { useState } from 'react';
-import { Table, Button, Select } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Table, Button, Select, Form } from 'antd';
+
 const Students = () => {
-	const data = [
-		{
-			key: 1,
-			name: 'meto',
-			surname: 'candar',
-			studentNumber: 481,
-		},
-		{
-			key: 2,
-			name: 'musti',
-			surname: 'bayar',
-			studentNumber: 314,
-		},
-		{
-			key: 3,
-			name: 'htc',
-			surname: 'drmz',
-			studentNumber: 418,
-		},
-		{
-			key: 4,
-			name: 'hsn',
-			surname: 'bstn',
-			studentNumber: 148,
-		},
-	];
+	const [courses, setCourses] = useState([]);
+	const [students, setStudents] = useState([]);
+
+	const getStudentdata = (selectedCourse) => {
+		fetch('http://localhost:8888/api/course/getStudents', {
+			// api port değişecek
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				courseId: selectedCourse,
+			}),
+		})
+			.then((response) => response.json())
+			.then((json) => setStudents(json));
+	};
+	useEffect(() => {
+		getCourseData();
+	}, []);
+
+	const getCourseData = () => {
+		fetch(
+			`http://localhost:8888/api/course/getCourses/${localStorage.getItem(
+				'username'
+			)}`,
+			{
+				// api port değişecek
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			}
+		)
+			.then((response) => response.json())
+			.then((json) => setCourses(json));
+	};
 	const columns = [
 		{
 			title: 'Name',
@@ -34,32 +46,46 @@ const Students = () => {
 		},
 		{
 			title: 'Surname',
-			dataIndex: 'surname',
-		},
-		{
-			title: 'Student Number',
-			dataIndex: 'studentNumber',
+			dataIndex: 'lastname',
 		},
 	];
-	const handleChange = (value) => {
-		//table data change...
-		console.log(value);
+	const onFinish = (values) => {
+		getStudentdata(values.selectedCourse);
+
+		console.log('Success:', values);
 	};
+
+	const onFinishFailed = (errorInfo) => {
+		console.log('Failed:', errorInfo);
+	};
+
 	return (
 		<>
 			<div style={{ marginBottom: 8 }}>
-				<Select
-					style={{ width: '50%' }}
-					placeholder='select one course'
-					onChange={handleChange}
-					optionLabelProp='label'
-					data={[
-						{ key: 1, value: 'microservices' },
-						{ key: 2, value: 'database' },
-					]}
-				></Select>
+				<Form
+					name='basic'
+					initialValues={{ remember: true }}
+					onFinish={onFinish}
+					onFinishFailed={onFinishFailed}
+				>
+					<Form.Item name='selectedCourse'>
+						<Select
+							style={{ width: '50%' }}
+							placeholder='select one course'
+							optionLabelProp='label'
+							data={courses}
+						></Select>
+					</Form.Item>
+					<Form.Item>
+						<Button id='get-students-button' type='primary' htmlType='submit'>
+							Create
+						</Button>
+					</Form.Item>
+					<Form.Item>
+						<Table dataSource={students} columns={columns} />
+					</Form.Item>
+				</Form>
 			</div>
-			<Table dataSource={data} columns={columns} />
 		</>
 	);
 };
