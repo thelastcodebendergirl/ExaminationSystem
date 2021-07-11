@@ -19,6 +19,10 @@ const CourseList = () => {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
+				'Authorization': localStorage.getItem('token'),
+				'Access-Control-Allow-Origin': '*',
+            	'Access-Control-Allow-Methods': 'DELETE, POST, GET, OPTIONS',
+            	'Access-Control-Allow-Headers': 'access-control-allow-headers,access-control-allow-methods,access-control-allow-origin,authorization,content-type',
 			},
 		})
 			.then((response) => response.json())

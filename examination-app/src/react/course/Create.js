@@ -27,15 +27,15 @@ const CreateCourse = () => {
 		console.log('Failed:', errorInfo);
 	};
 	const createCourse = (courseName) => {
-		fetch('https://localhost:8281/api/course/createCourse', {
+		fetch('http://localhost:8281/api/course/createCourse', {
 			// api port değişecek
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
 				'Authorization': localStorage.getItem('token'),
 				'Access-Control-Allow-Origin': '*',
-            			'Access-Control-Allow-Methods': 'DELETE, POST, GET, OPTIONS',
-            			'Access-Control-Allow-Headers': 'access-control-allow-headers,access-control-allow-methods,access-control-allow-origin,authorization,content-type',
+            	'Access-Control-Allow-Methods': 'DELETE, POST, GET, OPTIONS',
+            	'Access-Control-Allow-Headers': 'access-control-allow-headers,access-control-allow-methods,access-control-allow-origin,authorization,content-type',
 			},
 			body: JSON.stringify({
 				coursename: courseName,

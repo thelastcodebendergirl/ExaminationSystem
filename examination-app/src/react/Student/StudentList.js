@@ -6,11 +6,15 @@ const Students = () => {
 	const [students, setStudents] = useState([]);
 
 	const getStudentdata = (selectedCourse) => {
-		fetch('http://localhost:8888/api/course/getStudents', {
+		fetch('http://localhost:8281/api/course/getStudents', {
 			// api port değişecek
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
+				'Authorization': localStorage.getItem('token'),
+				'Access-Control-Allow-Origin': '*',
+            	'Access-Control-Allow-Methods': 'DELETE, POST, GET, OPTIONS',
+            	'Access-Control-Allow-Headers': 'access-control-allow-headers,access-control-allow-methods,access-control-allow-origin,authorization,content-type'
 			},
 			body: JSON.stringify({
 				courseId: selectedCourse,
