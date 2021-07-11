@@ -7,7 +7,8 @@ const { Sider } = Layout;
 
 function SiderMenu({ handleOnCollapse, collapsed }) {
 	const theme = 'dark';
-	const typeOfUser = 'teacher';
+	const typeOfUser =
+		localStorage.getItem('userType') === 's' ? 'student' : 'teacher';
 
 	return (
 		<Sider

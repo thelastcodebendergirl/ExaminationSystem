@@ -1,42 +1,59 @@
-import React, { useState } from 'react';
-import { Table, Button, Select, Space, Transfer } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Button, Transfer, message } from 'antd';
 import { useParams } from 'react-router';
+const success = () => {
+	message.success('This is a success message');
+};
+
 const AddStudents = () => {
 	const params = useParams();
 	const [mockData, setmockData] = useState([]);
 	const [targetKeys, settargetKeys] = useState([]);
 	const [isDirty, setIsdirty] = useState(false);
-	const columns = [
-		{
-			title: 'Name',
-			dataIndex: 'name',
-		},
-		{
-			title: 'Surname',
-			dataIndex: 'surname',
-		},
-		{
-			title: 'Student Number',
-			dataIndex: 'studentNum',
-		},
-	];
 
-	const getMock = () => {
-		const targetKeys = [];
-		const mockData = [];
-		for (let i = 0; i < 20; i++) {
-			const data = {
-				key: i.toString(),
-				title: `content${i + 1}`,
-				description: `description of content${i + 1}`,
-				chosen: Math.random() * 2 > 1,
-			};
-			if (data.chosen) {
-				targetKeys.push(data.key);
+	useEffect(() => {
+		getStudentTargetData(params);
+		getStudentMockData(params);
+	}, []);
+
+	const getStudentTargetData = (courseId) => {
+		fetch(`http://localhost:8280/api/course/getStudents/${courseId}`, {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		})
+			.then((response) => response.json())
+			.then((json) => settargetKeys(json));
+	};
+	const getStudentMockData = (courseId) => {
+		fetch(
+			`http://localhost:8280/api/course/getStudentsExceptTakesCourse/${courseId}`,
+			{
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+				},
 			}
-			mockData.push(data);
-		}
-		this.setState({ mockData, targetKeys });
+		)
+			.then((response) => response.json())
+			.then((json) => setmockData(json));
+	};
+	const save = () => {
+		fetch('http://localhost:8280/api/course/addStudents', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				studentIds: targetKeys,
+				courseIds: params,
+			}),
+		}).then((response) => {
+			if (response.ok) {
+				success();
+			}
+		});
 	};
 
 	const filterOption = (inputValue, option) =>
@@ -51,13 +68,11 @@ const AddStudents = () => {
 	const handleSearch = (dir, value) => {
 		console.log('search:', dir, value);
 	};
-	const handleSave = () => {
-		console.log();
-	};
+
 	return (
 		<>
 			<div style={{ marginBottom: 16 }}>
-				<Button type='primary' onClick={handleSave} disabled={!isDirty}>
+				<Button type='primary' onClick={save} disabled={!isDirty}>
 					Save
 				</Button>
 			</div>
@@ -72,9 +87,7 @@ const AddStudents = () => {
 				targetKeys={targetKeys}
 				onChange={handleChange}
 				onSearch={handleSearch}
-				render={(item) =>
-					`${item.name}- ${item.surname}- ${item.studentNumber}`
-				}
+				render={(item) => `${item.name}- ${item.lastname}`}
 				onSelectChange={onSelectChange}
 			/>
 		</>

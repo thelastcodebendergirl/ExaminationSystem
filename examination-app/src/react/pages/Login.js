@@ -36,6 +36,7 @@ const Login = () => {
 			if (response.ok) {
 				localStorage.setItem('username', username);
 				response.text().then(body => localStorage.setItem('token', body));
+				localStorage.setItem('userType', response.json.userType);
 				isOk();
 			}
 		});

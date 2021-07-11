@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Button, InputNumber, Input, Layout } from 'antd';
+import { Form, Button, InputNumber, Input, Layout, Select, Space } from 'antd';
 import Navbar from '../componentts/Navbar';
 import { Link, useHistory } from 'react-router-dom';
 import FirstLastName from '../componentts/FirstLastName';
@@ -23,10 +23,11 @@ const Register = () => {
 			values.firstname,
 			values.lastname,
 			values.username,
-			values.password
+			values.password,
+			values.userType
 		);
 	};
-	const create_user = (firstname, lastname, username, password) => {
+	const create_user = (firstname, lastname, username, password, userType) => {
 		fetch('http://localhost:8280/api/user/register', {
 			method: 'POST',
 			headers: {
@@ -35,6 +36,9 @@ const Register = () => {
 			body: JSON.stringify({
 				username: username,
 				password: password,
+				name: firstname,
+				lastname: lastname,
+				userType: userType,
 			}),
 		}).then((response) => {
 			if (response.ok) {
@@ -84,16 +88,33 @@ const Register = () => {
 						>
 							<Input />
 						</Form.Item>
-						<Form.Item
-							label={'Username'}
-							fieldKey='username'
-							name='username'
-							rules={[
-								{ required: true, message: 'Please input your school number!' },
-							]}
-						>
-							<Input />
-						</Form.Item>
+						<Space style={{ marginLeft: '14%' }} direction='horizontal'>
+							<Form.Item
+								label={'Username'}
+								fieldKey='username'
+								name='username'
+								rules={[
+									{ required: true, message: 'Please input your username!' },
+								]}
+							>
+								<Input style={{ marginLeft: '3%' }} />
+							</Form.Item>
+							<Form.Item
+								label={'User Type'}
+								fieldKey='userType'
+								name='userType'
+								style={{ marginLeft: '5%' }}
+								rules={[
+									{ required: true, message: 'Please input your user type!' },
+								]}
+							>
+								<Select style={{ marginLeft: '20%' }}>
+									<Select.Option value='s'>Student</Select.Option>
+									<Select.Option value='t'>Teacher</Select.Option>
+								</Select>
+							</Form.Item>
+						</Space>
+
 						<Form.Item
 							fieldKey='password'
 							label={'Password'}

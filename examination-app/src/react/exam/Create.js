@@ -16,25 +16,35 @@ const { Option } = Select;
 const CreateExam = () => {
 	const [disable, setDisable] = useState(false);
 	const { id } = useParams();
-	const addQuestion = () => {};
+
 	const onFinish = (values) => {
-		console.log('Received values of form:', values);
-		if (
-			values.examName &&
-			values.dateRange.length > 0 &&
-			values.questions.length > 0
-		)
-			success();
-		else if (!values.examName) error('Exam name must been entered.');
-		else if (values.dateRange.length > 0)
-			error('Exam date range  must been entered.');
-		else if (values.questions.length > 0)
-			error('Exam questions must been entered.');
+		createExam(id, values.examName, values.questions);
 	};
-	const onOk = (value) => {
-		console.log('selected time:');
+
+	const onFinishFailed = (errorInfo) => {
+		console.log('Failed:', errorInfo);
 	};
-	const onClick = () => {};
+	const createExam = (courseId, examName, questions) => {
+		fetch('http://localhost:8281/api/course/createExam', {
+			// api port değişecek
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				courseId: courseId,
+				examName: examName,
+				questions: questions,
+			}),
+		}).then((response) => {
+			if (response.ok) {
+				success();
+			} else {
+				error();
+			}
+		});
+	};
+
 	const success = () => {
 		message.success('Exam has been created successfully.', [5]);
 	};
@@ -46,6 +56,7 @@ const CreateExam = () => {
 			name='name="dynamic_form_item"'
 			onFinish={onFinish}
 			autoComplete='off'
+			onFinishFailed={onFinishFailed}
 		>
 			<Space style={{ display: 'grid', marginBottom: 8 }} align='baseline'>
 				<Card>
@@ -68,7 +79,6 @@ const CreateExam = () => {
 						<RangePicker
 							showTime={{ format: 'HH:mm' }}
 							format='YYYY-MM-DD HH:mm'
-							onOk={onOk}
 						/>
 					</Form.Item>
 				</Card>
@@ -120,8 +130,8 @@ const CreateExam = () => {
 								</Form.Item>
 								<Form.Item
 									{...field}
-									name={[field.name, 'rightAnswer']}
-									fieldKey={[field.fieldKey, 'rightAnswer']}
+									name={[field.name, 'answer']}
+									fieldKey={[field.fieldKey, 'answer']}
 									rules={[{ required: true, message: 'Missing right answer ' }]}
 								>
 									<Select placeholder={'Right Answer'}>
