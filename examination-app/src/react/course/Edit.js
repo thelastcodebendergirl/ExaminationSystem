@@ -43,7 +43,7 @@ const EditCourse = () => {
 		console.log('Failed:', errorInfo);
 	};
 	const updateCourse = (courseName) => {
-		fetch('http://localhost:8888/api/course/updateCourse', {
+		fetch('http://localhost:8281/api/course/updateCourse', {
 			// api port değişecek
 			method: 'POST',
 			headers: {
